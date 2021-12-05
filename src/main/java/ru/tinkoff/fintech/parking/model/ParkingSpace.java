@@ -1,13 +1,18 @@
 package ru.tinkoff.fintech.parking.model;
 
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+import java.util.UUID;
+
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ParkingSpace extends Coordinates {
 
-    @Setter
-    private boolean busy;
+    UUID id;
+    boolean busy;
 
     public boolean isBusy() {
         return busy;
