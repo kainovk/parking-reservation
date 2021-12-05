@@ -15,7 +15,7 @@ public interface ParkingSpaceRepository {
 
     Optional<ParkingSpace> findById(UUID id);
 
-    List<ParkingSpace> findAll(@Param("ids") List<UUID> ids);
+    List<ParkingSpace> findAll();
 
     void update(ParkingSpace ps);
 

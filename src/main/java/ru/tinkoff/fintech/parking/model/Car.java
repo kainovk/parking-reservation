@@ -19,5 +19,4 @@ public class Car {
     String number;
     int length;
     int width;
-    UUID psId;
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ru.tinkoff.fintech.parking.dao.ParkingSpaceRepository">
+    <insert id="save" parameterType="ru.tinkoff.fintech.parking.model.ParkingSpace">
+        <if test="id == null">
+            INSERT INTO parking_space (x, y, busy)
+            VALUES (#{x}, #{y}, false)
+        </if>
+        <if test="id != null">
+            INSERT INTO parking_space (id, x, y, busy)
+            VALUES (#{id}, #{x}, #{y}, false)
+        </if>
+    </insert>
+
+    <select id="findById" parameterType="java.util.UUID" resultMap="ParkingSpaceMap">
+        SELECT *
+        FROM parking_space
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="ParkingSpaceMap">
+        SELECT *
+        FROM parking_space
+    </select>
+
+    <update id="update" parameterType="ru.tinkoff.fintech.parking.model.ParkingSpace">
+        UPDATE parking_space
+        SET x    = #{x},
+            y    = #{y},
+            busy = #{busy}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.util.UUID">
+        DELETE
+        FROM parking_space
+        WHERE id = #{id}
+    </delete>
+
+    <resultMap id="ParkingSpaceMap" type="ru.tinkoff.fintech.parking.model.ParkingSpace">
+        <id property="id" column="id"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <result property="busy" column="busy"/>
+    </resultMap>
+</mapper>

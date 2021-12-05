@@ -15,11 +15,9 @@ public interface CarRepository {
 
     Optional<Car> findById(UUID id);
 
-    List<Car> findAll(@Param("ids") List<UUID> ids);
+    List<Car> findAll();
 
     void update(Car car);
 
     void delete(UUID id);
-
-    void takeParkingSpace(UUID psId);
 }

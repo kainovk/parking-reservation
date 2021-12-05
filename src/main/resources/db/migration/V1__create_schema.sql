@@ -12,7 +12,6 @@ CREATE TABLE car
     model  VARCHAR(256) NOT NULL,
     number VARCHAR(32)  NOT NULL,
     length SMALLINT     NOT NULL,
-    width  SMALLINT     NOT NULL,
-    ps_id  UUID,
-    CONSTRAINT FK_PS_CAR FOREIGN KEY (ps_id) REFERENCES parking_space (id)
+    width  SMALLINT     NOT NULL
 );
+

@@ -15,23 +15,23 @@ public class ParkingSpaceService {
 
     private final ParkingSpaceRepository repository;
 
-    void save(ParkingSpace ps){
+    public void save(ParkingSpace ps){
         repository.save(ps);
     }
 
-    ParkingSpace findById(UUID id){
+    public ParkingSpace findById(UUID id){
         return repository.findById(id).orElseThrow();
     }
 
-    List<ParkingSpace> findAll(@Param("ids") List<UUID> ids){
-        return repository.findAll(ids);
+    public List<ParkingSpace> findAll(){
+        return repository.findAll();
     }
 
-    void update(ParkingSpace ps){
+    public void update(ParkingSpace ps){
         repository.update(ps);
     }
 
-    void delete(UUID id){
+    public void delete(UUID id){
         repository.delete(id);
     }
 }
