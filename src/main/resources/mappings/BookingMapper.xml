@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ru.tinkoff.fintech.parking.dao.BookingRepository">
+
+    <insert id="park" parameterType="ru.tinkoff.fintech.parking.model.Booking">
+        INSERT INTO booking
+        VALUES (#{carId}, #{psId}, #{timeFrom}, #{timeTo})
+    </insert>
+
+    <delete id="leave" parameterType="java.util.UUID">
+        DELETE
+        FROM booking
+        WHERE car_id = #{carId}
+    </delete>
+
+    <select id="findAll" resultMap="BookingMap">
+        SELECT * FROM booking
+    </select>
+
+    <resultMap id="BookingMap" type="ru.tinkoff.fintech.parking.model.Booking">
+        <result property="carId" column="car_id"/>
+        <result property="psId" column="ps_id"/>
+        <result property="timeFrom" column="time_from"/>
+        <result property="timeTo" column="time_to"/>
+    </resultMap>
+</mapper>

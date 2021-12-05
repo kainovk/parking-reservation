@@ -6,7 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,9 +17,9 @@ import java.time.LocalTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Booking {
 
-    ParkingSpace ps;
-    Car car;
+    UUID carId;
+    UUID psId;
 
-    LocalTime timeFrom;
-    LocalTime timeTo;
+    Time timeFrom;
+    Time timeTo;
 }
