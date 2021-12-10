@@ -10,9 +10,10 @@ CREATE TABLE car
 CREATE TABLE parking_space
 (
     id   UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
-    x    SMALLINT NOT NULL,
-    y    SMALLINT NOT NULL,
-    busy BIT      NOT NULL
+    x    SMALLINT           NOT NULL,
+    y    SMALLINT           NOT NULL,
+    busy BIT  DEFAULT FALSE NOT NULL,
+    UNIQUE (x, y)
 );
 
 CREATE TABLE booking
