@@ -4,12 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ru.tinkoff.fintech.parking.dao.BookingRepository">
 
-    <insert id="park" parameterType="ru.tinkoff.fintech.parking.model.Booking">
-        INSERT INTO booking
+    <insert id="book" parameterType="ru.tinkoff.fintech.parking.model.Booking">
+        INSERT INTO booking (car_id, ps_id, time_from, time_to)
         VALUES (#{carId}, #{psId}, #{timeFrom}, #{timeTo})
     </insert>
 
-    <delete id="leave" parameterType="java.util.UUID">
+    <delete id="deleteBooking" parameterType="java.util.UUID">
         DELETE
         FROM booking
         WHERE car_id = #{carId}

@@ -14,12 +14,12 @@ public class BookingService {
 
     private final BookingRepository repository;
 
-    public void park(Booking booking) {
-        repository.park(booking);
+    public void book(Booking booking) {
+        repository.book(booking);
     }
 
-    public void leave(UUID carId) {
-        repository.leave(carId);
+    public void deleteBooking(UUID carId) {
+        repository.deleteBooking(carId);
     }
 
     public List<Booking> findAll() {

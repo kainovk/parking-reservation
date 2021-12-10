@@ -9,9 +9,9 @@ import java.util.UUID;
 @Mapper
 public interface BookingRepository {
 
-    void park(Booking booking);
+    void book(Booking booking);
 
-    void leave(UUID carId);
+    void deleteBooking(UUID carId);
 
     List<Booking> findAll();
 }
