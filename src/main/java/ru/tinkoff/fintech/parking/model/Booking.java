@@ -2,8 +2,10 @@ package ru.tinkoff.fintech.parking.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.context.annotation.Bean;
 
-import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Data
@@ -15,6 +17,8 @@ public class Booking {
 
     UUID carId;
     UUID psId;
-    Time timeFrom;
-    Time timeTo;
+
+    String timeFrom;
+    String timeTo;
+
 }

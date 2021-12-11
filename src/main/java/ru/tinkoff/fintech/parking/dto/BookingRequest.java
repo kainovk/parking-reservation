@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -21,8 +21,8 @@ public class BookingRequest {
     UUID carId;
     @NotNull
     UUID psId;
-    @NotNull
-    Time timeFrom;
-    @NotNull
-    Time timeTo;
+    @NotBlank
+    String timeFrom;
+    @NotBlank
+    String timeTo;
 }
