@@ -7,6 +7,7 @@ import ru.tinkoff.fintech.parking.dto.BookingRequest;
 import ru.tinkoff.fintech.parking.model.Booking;
 import ru.tinkoff.fintech.parking.service.BookingService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping("/book")
-    public void book(@RequestBody @Validated BookingRequest request) {
+    public void book(@RequestBody @Validated @Valid BookingRequest request) {
         Booking booking = Booking.builder()
                 .carId(request.getCarId())
                 .psId(request.getPsId())
@@ -35,7 +36,7 @@ public class BookingController {
 
     //TODO
     @PutMapping("/update/{carId}")
-    public void updateBooking(@RequestBody @Validated BookingRequest request) {
+    public void updateBooking(@RequestBody @Validated @Valid BookingRequest request) {
         Booking booking = Booking.builder()
                 .psId(request.getPsId())
                 .timeFrom(request.getTimeFrom())
