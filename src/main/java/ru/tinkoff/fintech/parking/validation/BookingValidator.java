@@ -19,9 +19,12 @@ public class BookingValidator implements ConstraintValidator<BookingConstraint, 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTimeFrom = LocalDateTime.parse(booking.getTimeFrom(), formatter);
         LocalDateTime dateTimeTo = LocalDateTime.parse(booking.getTimeTo(), formatter);
+        String nowStr = LocalDateTime.now().format(formatter);
+        LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
         long minutes = ChronoUnit.MINUTES.between(dateTimeFrom, dateTimeTo);
 
         return dateTimeFrom.isBefore(dateTimeTo) &&
+               dateTimeFrom.isAfter(now) &&
                dateTimeFrom.getDayOfWeek() != DayOfWeek.SATURDAY &&
                dateTimeFrom.getDayOfWeek() != DayOfWeek.SUNDAY &&
                minutes >= 60 && minutes <= 60 * 24;

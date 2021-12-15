@@ -18,8 +18,8 @@ CREATE TABLE parking_space
 
 CREATE TABLE booking
 (
-    car_id    UUID NOT NULL,
-    ps_id     UUID NOT NULL,
+    car_id    UUID     NOT NULL,
+    ps_id     UUID     NOT NULL,
     time_from DATETIME NOT NULL,
     time_to   DATETIME NOT NULL,
     FOREIGN KEY (car_id) REFERENCES car (id) ON DELETE CASCADE,

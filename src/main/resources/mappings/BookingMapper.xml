@@ -9,15 +9,37 @@
         VALUES (#{carId}, #{psId}, #{timeFrom}, #{timeTo})
     </insert>
 
+    <select id="findByCarId" resultMap="BookingMap">
+        SELECT *
+        FROM booking
+        WHERE car_id = #{carId}
+    </select>
+
+    <select id="findAll" resultMap="BookingMap">
+        SELECT *
+        FROM booking
+    </select>
+
+    <update id="update" parameterType="ru.tinkoff.fintech.parking.model.Booking">
+        UPDATE booking
+        SET ps_id     = #{psId},
+            time_from = #{timeFrom},
+            time_to   = #{timeTo}
+        WHERE car_id = #{carId}
+    </update>
+
     <delete id="deleteBooking" parameterType="java.util.UUID">
         DELETE
         FROM booking
-        WHERE car_id = #{carId}
+        WHERE car_id = #{carId};
     </delete>
 
-    <select id="findAll" resultMap="BookingMap">
-        SELECT * FROM booking
-    </select>
+    <delete id="deleteAll">
+        DELETE
+        FROM booking;
+        UPDATE parking_space
+        SET busy = false;
+    </delete>
 
     <resultMap id="BookingMap" type="ru.tinkoff.fintech.parking.model.Booking">
         <result property="carId" column="car_id"/>

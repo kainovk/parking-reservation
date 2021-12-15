@@ -1,12 +1,12 @@
 package ru.tinkoff.fintech.parking.service;
 
 import lombok.AllArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.fintech.parking.dao.CarRepository;
 import ru.tinkoff.fintech.parking.model.Car;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -19,8 +19,8 @@ public class CarService {
         repository.save(car);
     }
 
-    public Car findById(UUID id) {
-        return repository.findById(id).orElseThrow();
+    public Optional<Car> findById(UUID id) {
+        return repository.findById(id);
     }
 
     public List<Car> findAll() {

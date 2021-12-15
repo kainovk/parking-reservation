@@ -7,6 +7,7 @@ import ru.tinkoff.fintech.parking.dao.ParkingSpaceRepository;
 import ru.tinkoff.fintech.parking.model.ParkingSpace;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -15,23 +16,23 @@ public class ParkingSpaceService {
 
     private final ParkingSpaceRepository repository;
 
-    public void save(ParkingSpace ps){
+    public void save(ParkingSpace ps) {
         repository.save(ps);
     }
 
-    public ParkingSpace findById(UUID id){
-        return repository.findById(id).orElseThrow();
+    public Optional<ParkingSpace> findById(UUID id) {
+        return repository.findById(id);
     }
 
-    public List<ParkingSpace> findAll(){
+    public List<ParkingSpace> findAll() {
         return repository.findAll();
     }
 
-    public void update(ParkingSpace ps){
+    public void update(ParkingSpace ps) {
         repository.update(ps);
     }
 
-    public void delete(UUID id){
+    public void delete(UUID id) {
         repository.delete(id);
     }
 }
