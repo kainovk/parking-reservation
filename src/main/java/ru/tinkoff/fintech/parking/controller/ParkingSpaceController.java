@@ -10,6 +10,7 @@ import ru.tinkoff.fintech.parking.model.ParkingSpace;
 import ru.tinkoff.fintech.parking.service.ParkingSpaceService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,11 +31,15 @@ public class ParkingSpaceController {
                 .busy(request.getBusy())
                 .build();
 
-        Optional<ParkingSpace> psToFind = parkingSpaceService.findById(ps.getId());
-        if (psToFind.isPresent()) {
+        Optional<ParkingSpace> psToFindById = parkingSpaceService.findById(ps.getId());
+        if (psToFindById.isPresent()) {
             throw PARKING_SPACE_ALREADY_EXISTS.exception("Parking space " + ps.getId() + " is already exists");
         } else {
-            parkingSpaceService.save(ps);
+            try {
+                parkingSpaceService.save(ps);
+            } catch (Exception e){
+                throw PARKING_SPACE_ALREADY_EXISTS.exception("Parking space with coordinates (" + ps.getX() + ", " + ps.getY() + ") is already exists");
+            }
         }
     }
 

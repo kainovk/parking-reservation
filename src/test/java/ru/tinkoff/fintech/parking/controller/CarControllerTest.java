@@ -40,6 +40,20 @@ public class CarControllerTest extends AbstractTest {
     }
 
     @Test
+    void testCreateCarAlreadyExists() throws Exception {
+        Car car = prepareCarInvalidLength(UUID.randomUUID());
+        populateDb(car);
+        var carJson = jackson.writeValueAsString(car);
+
+        mockMvc.perform(post("/cars/create")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
+                        .contentType("application/json")
+                        .content(carJson))
+                .andDo(print())
+                .andExpect(status().is(400));
+    }
+
+    @Test
     void testCreateCarInvalidLength() throws Exception {
         Car car = prepareCarInvalidLength(UUID.randomUUID());
         var carJson = jackson.writeValueAsString(car);
