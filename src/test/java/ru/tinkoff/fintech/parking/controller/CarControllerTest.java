@@ -11,6 +11,7 @@ import ru.tinkoff.fintech.parking.model.Car;
 
 import java.util.UUID;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -32,6 +33,7 @@ public class CarControllerTest extends AbstractTest {
         var carJson = jackson.writeValueAsString(car);
 
         mockMvc.perform(post("/cars/create")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
                         .contentType("application/json")
                         .content(carJson))
                 .andExpect(status().isOk());
@@ -43,6 +45,7 @@ public class CarControllerTest extends AbstractTest {
         var carJson = jackson.writeValueAsString(car);
 
         mockMvc.perform(post("/cars/create")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
                         .contentType("application/json")
                         .content(carJson))
                 .andDo(print())
@@ -55,6 +58,7 @@ public class CarControllerTest extends AbstractTest {
         var carJson = jackson.writeValueAsString(car);
 
         mockMvc.perform(post("/cars/create")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
                         .contentType("application/json")
                         .content(carJson))
                 .andDo(print())
@@ -67,6 +71,7 @@ public class CarControllerTest extends AbstractTest {
         var carJson = jackson.writeValueAsString(car);
 
         mockMvc.perform(post("/cars/create")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
                         .contentType("application/json")
                         .content(carJson))
                 .andDo(print())
@@ -79,6 +84,7 @@ public class CarControllerTest extends AbstractTest {
         var carJson = jackson.writeValueAsString(car);
 
         mockMvc.perform(post("/cars/create")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
                         .contentType("application/json")
                         .content(carJson))
                 .andDo(print())
@@ -92,7 +98,8 @@ public class CarControllerTest extends AbstractTest {
         var carJson = jackson.writeValueAsString(car);
 
         mockMvc.perform(get("/cars/get/")
-                        .param("id", car.getId().toString()))
+                        .param("id", car.getId().toString())
+                        .with(user("admin").password("pass").roles("USER", "ADMIN")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("[" + carJson + "]"));
@@ -108,6 +115,7 @@ public class CarControllerTest extends AbstractTest {
         var carJson = jackson.writeValueAsString(car);
 
         mockMvc.perform(put("/cars/update/" + car.getId())
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
                         .contentType("application/json")
                         .content(carJson))
                 .andExpect(status().isOk());
@@ -123,6 +131,7 @@ public class CarControllerTest extends AbstractTest {
         var carJson = jackson.writeValueAsString(car);
 
         mockMvc.perform(put("/cars/update/" + car.getId())
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
                         .contentType("application/json")
                         .content(carJson))
                 .andExpect(status().is(400));
@@ -138,6 +147,7 @@ public class CarControllerTest extends AbstractTest {
         var carJson = jackson.writeValueAsString(car);
 
         mockMvc.perform(put("/cars/update/" + car.getId())
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
                         .contentType("application/json")
                         .content(carJson))
                 .andExpect(status().is(400));
@@ -148,7 +158,8 @@ public class CarControllerTest extends AbstractTest {
         Car car = prepareCar(UUID.randomUUID());
         populateDb(car);
 
-        mockMvc.perform(delete("/cars/delete/" + car.getId()))
+        mockMvc.perform(delete("/cars/delete/" + car.getId())
+                        .with(user("admin").password("pass").roles("USER", "ADMIN")))
                 .andExpect(status().isOk());
     }
 
@@ -157,7 +168,8 @@ public class CarControllerTest extends AbstractTest {
         Car car = prepareCar(UUID.randomUUID());
         populateDb(car);
 
-        mockMvc.perform(delete("/cars/delete/" + UUID.randomUUID()))
+        mockMvc.perform(delete("/cars/delete/" + UUID.randomUUID())
+                        .with(user("admin").password("pass").roles("USER", "ADMIN")))
                 .andDo(print())
                 .andExpect(status().is(400));
     }

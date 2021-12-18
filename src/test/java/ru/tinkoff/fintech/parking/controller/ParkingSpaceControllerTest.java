@@ -11,6 +11,7 @@ import ru.tinkoff.fintech.parking.model.ParkingSpace;
 
 import java.util.UUID;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -32,6 +33,7 @@ public class ParkingSpaceControllerTest extends AbstractTest {
         var psJson = jackson.writeValueAsString(ps);
 
         mockMvc.perform(post("/parking-spaces/create")
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(psJson))
                 .andExpect(status().isOk());
@@ -43,6 +45,7 @@ public class ParkingSpaceControllerTest extends AbstractTest {
         var psJson = jackson.writeValueAsString(ps);
 
         mockMvc.perform(post("/parking-spaces/create")
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(psJson))
                 .andDo(print())
@@ -56,7 +59,8 @@ public class ParkingSpaceControllerTest extends AbstractTest {
         var psJson = jackson.writeValueAsString(ps);
 
         mockMvc.perform(get("/parking-spaces/get/")
-                        .param("id", ps.getId().toString()))
+                        .param("id", ps.getId().toString())
+                        .with(user("admin").password("pass").roles("USER","ADMIN")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("[" + psJson + "]"));
@@ -72,6 +76,7 @@ public class ParkingSpaceControllerTest extends AbstractTest {
         var psJson = jackson.writeValueAsString(ps);
 
         mockMvc.perform(put("/parking-spaces/update/" + ps.getId())
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(psJson))
                 .andExpect(status().isOk());
@@ -87,6 +92,7 @@ public class ParkingSpaceControllerTest extends AbstractTest {
         var psJson = jackson.writeValueAsString(ps);
 
         mockMvc.perform(put("/parking-spaces/update/" + ps.getId())
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(psJson))
                 .andDo(print())
@@ -98,7 +104,8 @@ public class ParkingSpaceControllerTest extends AbstractTest {
         ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
         populateDb(ps);
 
-        mockMvc.perform(delete("/parking-spaces/delete/" + ps.getId()))
+        mockMvc.perform(delete("/parking-spaces/delete/" + ps.getId())
+                        .with(user("admin").password("pass").roles("USER","ADMIN")))
                 .andExpect(status().isOk());
     }
 
@@ -107,7 +114,8 @@ public class ParkingSpaceControllerTest extends AbstractTest {
         ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
         populateDb(ps);
 
-        mockMvc.perform(delete("/parking-spaces/delete/" + UUID.randomUUID()))
+        mockMvc.perform(delete("/parking-spaces/delete/" + UUID.randomUUID())
+                        .with(user("admin").password("pass").roles("USER","ADMIN")))
                 .andExpect(status().is(400));
     }
 

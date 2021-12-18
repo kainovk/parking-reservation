@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,12 +45,14 @@ public class BookingControllerTest extends AbstractTest {
         LocalDateTime now = LocalDateTime.now();
         if (now.getDayOfWeek() == DayOfWeek.SATURDAY || now.getDayOfWeek() == DayOfWeek.SUNDAY) {
             mockMvc.perform(post("/bookings/book")
+                            .with(user("admin").password("pass").roles("USER","ADMIN"))
                             .contentType("application/json")
                             .content(bookingJson))
                     .andDo(print())
                     .andExpect(status().is(400));
         } else {
             mockMvc.perform(post("/bookings/book")
+                            .with(user("admin").password("pass").roles("USER","ADMIN"))
                             .contentType("application/json")
                             .content(bookingJson))
                     .andExpect(status().isOk());
@@ -66,6 +69,7 @@ public class BookingControllerTest extends AbstractTest {
         var bookingJson = jackson.writeValueAsString(booking);
 
         mockMvc.perform(post("/bookings/book")
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(bookingJson))
                 .andDo(print())
@@ -80,6 +84,7 @@ public class BookingControllerTest extends AbstractTest {
         var bookingJson = jackson.writeValueAsString(booking);
 
         mockMvc.perform(post("/bookings/book")
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(bookingJson))
                 .andDo(print())
@@ -94,6 +99,7 @@ public class BookingControllerTest extends AbstractTest {
         var bookingJson = jackson.writeValueAsString(booking);
 
         mockMvc.perform(post("/bookings/book")
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(bookingJson))
                 .andDo(print())
@@ -111,6 +117,7 @@ public class BookingControllerTest extends AbstractTest {
         var bookingJson = jackson.writeValueAsString(booking);
 
         mockMvc.perform(post("/bookings/book")
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(bookingJson))
                 .andDo(print())
@@ -135,12 +142,14 @@ public class BookingControllerTest extends AbstractTest {
         LocalDateTime now = LocalDateTime.now();
         if (now.getDayOfWeek() == DayOfWeek.SATURDAY || now.getDayOfWeek() == DayOfWeek.SUNDAY) {
             mockMvc.perform(put("/bookings/update")
+                            .with(user("admin").password("pass").roles("USER","ADMIN"))
                             .contentType("application/json")
                             .content(bookingJson))
                     .andDo(print())
                     .andExpect(status().is(400));
         } else {
             mockMvc.perform(put("/bookings/update")
+                            .with(user("admin").password("pass").roles("USER","ADMIN"))
                             .contentType("application/json")
                             .content(bookingJson))
                     .andExpect(status().isOk());
@@ -155,6 +164,7 @@ public class BookingControllerTest extends AbstractTest {
         var bookingJson = jackson.writeValueAsString(booking);
 
         mockMvc.perform(put("/bookings/update")
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(bookingJson))
                 .andDo(print())
@@ -178,6 +188,7 @@ public class BookingControllerTest extends AbstractTest {
         var bookingJson = jackson.writeValueAsString(newBooking);
 
         mockMvc.perform(put("/bookings/update")
+                        .with(user("admin").password("pass").roles("USER","ADMIN"))
                         .contentType("application/json")
                         .content(bookingJson))
                 .andDo(print())
@@ -194,13 +205,15 @@ public class BookingControllerTest extends AbstractTest {
         populateDbBooking(booking);
 
 
-        mockMvc.perform(delete("/bookings/delete/" + booking.getCarId()))
+        mockMvc.perform(delete("/bookings/delete/" + booking.getCarId())
+                        .with(user("admin").password("pass").roles("USER","ADMIN")))
                 .andExpect(status().isOk());
     }
 
     @Test
     void testDeleteBookingInvalidId() throws Exception {
-        mockMvc.perform(delete("/bookings/delete/" + UUID.randomUUID()))
+        mockMvc.perform(delete("/bookings/delete/" + UUID.randomUUID())
+                        .with(user("admin").password("pass").roles("USER","ADMIN")))
                 .andDo(print())
                 .andExpect(status().is(400));
     }
