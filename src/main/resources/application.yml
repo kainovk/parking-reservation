@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  datasource:
+    username: wbclnlcgmufofi
+    password: 71a96c077f942ce101f2661552381613f6ee262de92e9e516b0bd04076c31d04
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://ec2-34-242-89-204.eu-west-1.compute.amazonaws.com:5432/ddmt17iudhdisf
+
+mybatis:
+  mapper-locations: classpath*:mappings/*.xml
+  type-handlers-package: ru.tinkoff.fintech.parking.handlers
+
+auth:
+  login_user: user
+  login_admin: admin
+  password_user: userpass
+  password_admin: adminpass
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - metrics

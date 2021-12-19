@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ru.tinkoff.fintech.parking.dao.BookingRepository">
+
+    <insert id="book" parameterType="ru.tinkoff.fintech.parking.model.Booking">
+        INSERT INTO booking (car_id, ps_id, time_from, time_to)
+        VALUES (#{carId}, #{psId}, #{timeFrom}, #{timeTo})
+    </insert>
+
+    <select id="findByCarId" resultMap="BookingMap">
+        SELECT *
+        FROM booking
+        WHERE car_id = #{carId}
+    </select>
+
+    <select id="findAll" resultMap="BookingMap">
+        SELECT *
+        FROM booking
+    </select>
+
+    <update id="update" parameterType="ru.tinkoff.fintech.parking.model.Booking">
+        UPDATE booking
+        SET ps_id     = #{psId},
+            time_from = #{timeFrom},
+            time_to   = #{timeTo}
+        WHERE car_id = #{carId}
+    </update>
+
+    <delete id="deleteBooking" parameterType="java.util.UUID">
+        DELETE
+        FROM booking
+        WHERE car_id = #{carId};
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE
+        FROM booking;
+        UPDATE parking_space
+        SET busy = false;
+    </delete>
+
+    <resultMap id="BookingMap" type="ru.tinkoff.fintech.parking.model.Booking">
+        <result property="carId" column="car_id"/>
+        <result property="psId" column="ps_id"/>
+        <result property="timeFrom" column="time_from"/>
+        <result property="timeTo" column="time_to"/>
+    </resultMap>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ru.tinkoff.fintech.parking.dao.CarRepository">
+
+    <insert id="save" parameterType="ru.tinkoff.fintech.parking.model.Car">
+        <if test="id == null">
+            INSERT INTO car (model, number, length, width)
+            VALUES (#{model}, #{number}, #{length}, #{width})
+        </if>
+        <if test="id != null">
+            INSERT INTO car (id, model, number, length, width)
+            VALUES (#{id}, #{model}, #{number}, #{length}, #{width})
+        </if>
+    </insert>
+
+    <select id="findById" parameterType="java.util.UUID" resultMap="CarMap">
+        SELECT *
+        FROM car
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="CarMap">
+        SELECT *
+        FROM car
+    </select>
+
+    <update id="update" parameterType="ru.tinkoff.fintech.parking.model.Car">
+        UPDATE car
+        SET model  = #{model},
+            number = #{number},
+            length = #{length},
+            width  = #{width}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.util.UUID">
+        DELETE
+        FROM car
+        WHERE id = #{id}
+    </delete>
+
+    <resultMap id="CarMap" type="ru.tinkoff.fintech.parking.model.Car">
+        <id property="id" column="id" typeHandler="ru.tinkoff.fintech.parking.handlers.UuidTypeHandler"/>
+        <result property="model" column="model"/>
+        <result property="number" column="number"/>
+        <result property="length" column="length"/>
+        <result property="width" column="width"/>
+    </resultMap>
+</mapper>
