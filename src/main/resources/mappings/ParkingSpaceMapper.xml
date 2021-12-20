@@ -4,14 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ru.tinkoff.fintech.parking.dao.ParkingSpaceRepository">
     <insert id="save" parameterType="ru.tinkoff.fintech.parking.model.ParkingSpace">
-        <if test="id == null">
-            INSERT INTO parking_space (x, y, busy)
-            VALUES (#{x}, #{y}, false)
-        </if>
-        <if test="id != null">
-            INSERT INTO parking_space (id, x, y, busy)
-            VALUES (#{id}, #{x}, #{y}, false)
-        </if>
+        INSERT INTO parking_space (id, x, y, busy)
+        VALUES (#{id}, #{x}, #{y}, false)
     </insert>
 
     <select id="findById" parameterType="java.util.UUID" resultMap="ParkingSpaceMap">

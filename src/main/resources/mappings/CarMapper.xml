@@ -5,14 +5,8 @@
 <mapper namespace="ru.tinkoff.fintech.parking.dao.CarRepository">
 
     <insert id="save" parameterType="ru.tinkoff.fintech.parking.model.Car">
-        <if test="id == null">
-            INSERT INTO car (model, number, length, width)
-            VALUES (#{model}, #{number}, #{length}, #{width})
-        </if>
-        <if test="id != null">
-            INSERT INTO car (id, model, number, length, width)
-            VALUES (#{id}, #{model}, #{number}, #{length}, #{width})
-        </if>
+        INSERT INTO car (id, model, number, length, width)
+        VALUES (#{id}, #{model}, #{number}, #{length}, #{width})
     </insert>
 
     <select id="findById" parameterType="java.util.UUID" resultMap="CarMap">

@@ -26,6 +26,7 @@ public class ParkingSpaceController {
     @PostMapping("/create")
     public void createParkingSpace(@RequestBody @Validated ParkingSpaceRequest request) {
         ParkingSpace ps = ParkingSpace.builder()
+                .id(UUID.randomUUID())
                 .x(request.getX())
                 .y(request.getY())
                 .busy(request.getBusy())

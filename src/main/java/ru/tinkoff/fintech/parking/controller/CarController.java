@@ -25,6 +25,7 @@ public class CarController {
     @PostMapping("/create")
     public void createCar(@RequestBody @Validated CarRequest request) {
         Car car = Car.builder()
+                .id(UUID.randomUUID())
                 .model(request.getModel())
                 .number(request.getNumber())
                 .length(request.getLength())
