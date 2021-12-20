@@ -42,7 +42,12 @@ public class CarController {
 
     @GetMapping("/get/{id}")
     public Car getCar(@PathVariable UUID id) {
-        return carService.findById(id).orElseThrow();
+        Optional<Car> carToFind = carService.findById(id);
+        if (carToFind.isEmpty()) {
+            throw CAR_NOT_FOUND.exception("Car with id=" + id + " not found");
+        } else {
+            return carService.findById(id).orElseThrow();
+        }
     }
 
     @GetMapping("/get")

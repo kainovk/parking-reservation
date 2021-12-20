@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.fintech.parking.dto.ParkingSpaceRequest;
 import ru.tinkoff.fintech.parking.exception.ApplicationError;
+import ru.tinkoff.fintech.parking.model.Car;
 import ru.tinkoff.fintech.parking.model.ParkingSpace;
 import ru.tinkoff.fintech.parking.service.ParkingSpaceService;
 
@@ -38,7 +39,7 @@ public class ParkingSpaceController {
         } else {
             try {
                 parkingSpaceService.save(ps);
-            } catch (Exception e){
+            } catch (Exception e) {
                 throw PARKING_SPACE_ALREADY_EXISTS.exception("Parking space with coordinates (" + ps.getX() + ", " + ps.getY() + ") is already exists");
             }
         }
@@ -46,7 +47,12 @@ public class ParkingSpaceController {
 
     @GetMapping("/get/{id}")
     public ParkingSpace getParkingSpace(@PathVariable UUID id) {
-        return parkingSpaceService.findById(id).orElseThrow();
+        Optional<ParkingSpace> parkingSpaceToFind = parkingSpaceService.findById(id);
+        if (parkingSpaceToFind.isEmpty()) {
+            throw PARKING_SPACE_NOT_FOUND.exception("Parking space with id=" + id + " not found");
+        } else {
+            return parkingSpaceService.findById(id).orElseThrow();
+        }
     }
 
     @GetMapping("/get")
