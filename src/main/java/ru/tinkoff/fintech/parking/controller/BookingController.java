@@ -108,7 +108,15 @@ public class BookingController {
         if (booking.isEmpty()) {
             throw BOOKING_NOT_FOUND.exception("Booking with car id=" + carId + " not found");
         } else {
-            bookingService.deleteBooking(carId);
+            Optional<ParkingSpace> ps = psService.findById(booking.get().getPsId());
+
+            if(ps.isEmpty()){
+                throw PARKING_SPACE_NOT_FOUND.exception("Parking space " + booking.get().getPsId() + " not found");
+            }else{
+                ps.get().setBusy(false);
+                psService.update(ps.get());
+                bookingService.deleteBooking(carId);
+            }
         }
     }
 
