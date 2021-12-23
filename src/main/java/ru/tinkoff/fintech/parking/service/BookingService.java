@@ -23,7 +23,7 @@ public class BookingService {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private LocalDateTime dateTimeTo;
 
-    @Scheduled(cron = "0/15 * * ? * MON-FRI")
+    @Scheduled(cron = "${cron.fixed_time_scanner_cron}")
     public void scanToDelete() {
         String nowStr = LocalDateTime.now().format(formatter);
         LocalDateTime now = LocalDateTime.parse(nowStr, formatter);
@@ -37,7 +37,7 @@ public class BookingService {
         });
     }
 
-    @Scheduled(cron = "0 0 0 ? * MON-FRI")
+    @Scheduled(cron = "${cron.midnight_scanner_cron}")
     public void deleteAll() {
         List<Booking> bookings = findAll();
         bookings.forEach(it -> {
