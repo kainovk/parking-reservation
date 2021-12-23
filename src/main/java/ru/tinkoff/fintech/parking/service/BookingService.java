@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.fintech.parking.dao.BookingRepository;
 import ru.tinkoff.fintech.parking.model.Booking;
+import ru.tinkoff.fintech.parking.model.ParkingSpace;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,12 +14,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.BOOKING_NOT_FOUND;
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.PARKING_SPACE_NOT_FOUND;
+
 @EnableScheduling
 @RequiredArgsConstructor
 @Service
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final ParkingSpaceService psService;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private LocalDateTime dateTimeTo;
@@ -62,6 +67,21 @@ public class BookingService {
     }
 
     public void deleteBooking(UUID carId) {
-        bookingRepository.deleteBooking(carId);
+
+        Optional<Booking> booking = findByCarId(carId);
+
+        if (booking.isEmpty()) {
+            throw BOOKING_NOT_FOUND.exception("Booking with car id=" + carId + " not found");
+        } else {
+            Optional<ParkingSpace> ps = psService.findById(booking.get().getPsId());
+
+            if(ps.isEmpty()){
+                throw PARKING_SPACE_NOT_FOUND.exception("Parking space " + booking.get().getPsId() + " not found");
+            }else{
+                ps.get().setBusy(false);
+                psService.update(ps.get());
+                bookingRepository.deleteBooking(carId);
+            }
+        }
     }
 }

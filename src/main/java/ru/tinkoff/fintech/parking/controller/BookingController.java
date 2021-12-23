@@ -115,21 +115,7 @@ public class BookingController {
 
     @DeleteMapping("/delete/{carId}")
     public void deleteBooking(@PathVariable UUID carId) {
-        Optional<Booking> booking = bookingService.findByCarId(carId);
-
-        if (booking.isEmpty()) {
-            throw BOOKING_NOT_FOUND.exception("Booking with car id=" + carId + " not found");
-        } else {
-            Optional<ParkingSpace> ps = psService.findById(booking.get().getPsId());
-
-            if(ps.isEmpty()){
-                throw PARKING_SPACE_NOT_FOUND.exception("Parking space " + booking.get().getPsId() + " not found");
-            }else{
-                ps.get().setBusy(false);
-                psService.update(ps.get());
-                bookingService.deleteBooking(carId);
-            }
-        }
+        bookingService.deleteBooking(carId);
     }
 
     @DeleteMapping("/delete")
