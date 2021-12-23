@@ -3,19 +3,27 @@ package ru.tinkoff.fintech.parking.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.fintech.parking.dto.ParkingSpaceRequest;
 import ru.tinkoff.fintech.parking.exception.ApplicationError;
-import ru.tinkoff.fintech.parking.model.Car;
 import ru.tinkoff.fintech.parking.model.ParkingSpace;
 import ru.tinkoff.fintech.parking.service.ParkingSpaceService;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import static ru.tinkoff.fintech.parking.exception.ApplicationError.*;
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.ApplicationException;
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.PARKING_SPACE_ALREADY_EXISTS;
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.PARKING_SPACE_NOT_FOUND;
 
 @RestController
 @RequestMapping("/parking-spaces")

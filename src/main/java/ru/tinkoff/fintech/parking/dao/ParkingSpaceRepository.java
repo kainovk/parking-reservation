@@ -1,7 +1,6 @@
 package ru.tinkoff.fintech.parking.dao;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import ru.tinkoff.fintech.parking.model.ParkingSpace;
 
 import java.util.List;

@@ -3,7 +3,15 @@ package ru.tinkoff.fintech.parking.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.fintech.parking.dto.BookingRequest;
 import ru.tinkoff.fintech.parking.exception.ApplicationError;
 import ru.tinkoff.fintech.parking.model.Booking;
@@ -18,7 +26,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static ru.tinkoff.fintech.parking.exception.ApplicationError.*;
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.BOOKING_NOT_FOUND;
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.CAR_ALREADY_BOOKED;
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.CAR_NOT_FOUND;
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.PARKING_SPACE_IS_ALREADY_TAKEN;
+import static ru.tinkoff.fintech.parking.exception.ApplicationError.PARKING_SPACE_NOT_FOUND;
 
 @RestController
 @RequestMapping("/bookings")

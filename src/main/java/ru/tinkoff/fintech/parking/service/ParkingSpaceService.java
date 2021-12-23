@@ -1,7 +1,6 @@
 package ru.tinkoff.fintech.parking.service;
 
 import lombok.AllArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.fintech.parking.dao.ParkingSpaceRepository;
 import ru.tinkoff.fintech.parking.model.ParkingSpace;
