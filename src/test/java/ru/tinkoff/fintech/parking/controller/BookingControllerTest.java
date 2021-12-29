@@ -36,29 +36,36 @@ public class BookingControllerTest extends AbstractTest {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Test
-    void testCreateBookingSuccess() throws Exception {
+    void testCreateBookingWeekend() throws Exception {
         Car car = prepareCar(UUID.randomUUID());
         populateDbCar(car);
         ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
         populateDbParkingSpace(ps);
-        Booking booking = prepareBooking(car.getId(), ps.getId());
+        Booking booking = prepareBookingWeekend(car.getId(), ps.getId());
         var bookingJson = jackson.writeValueAsString(booking);
 
-        LocalDateTime now = LocalDateTime.now();
-        if (now.getDayOfWeek() == DayOfWeek.SATURDAY || now.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            mockMvc.perform(post("/bookings/book")
-                            .with(user("admin").password("pass").roles("USER", "ADMIN"))
-                            .contentType("application/json")
-                            .content(bookingJson))
-                    .andDo(print())
-                    .andExpect(status().is(400));
-        } else {
-            mockMvc.perform(post("/bookings/book")
-                            .with(user("admin").password("pass").roles("USER", "ADMIN"))
-                            .contentType("application/json")
-                            .content(bookingJson))
-                    .andExpect(status().isOk());
-        }
+        mockMvc.perform(post("/bookings/book")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
+                        .contentType("application/json")
+                        .content(bookingJson))
+                .andDo(print())
+                .andExpect(status().is(400));
+    }
+
+    @Test
+    void testCreateBookingWeekdaysSuccess() throws Exception {
+        Car car = prepareCar(UUID.randomUUID());
+        populateDbCar(car);
+        ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
+        populateDbParkingSpace(ps);
+        Booking booking = prepareBookingWeekdays(car.getId(), ps.getId());
+        var bookingJson = jackson.writeValueAsString(booking);
+
+        mockMvc.perform(post("/bookings/book")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
+                        .contentType("application/json")
+                        .content(bookingJson))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -114,7 +121,7 @@ public class BookingControllerTest extends AbstractTest {
         populateDbCar(car);
         ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
         populateDbParkingSpace(ps);
-        Booking booking = prepareBooking(car.getId(), ps.getId());
+        Booking booking = prepareBookingWeekdays(car.getId(), ps.getId());
         populateDbBooking(booking);
         var bookingJson = jackson.writeValueAsString(booking);
 
@@ -127,12 +134,12 @@ public class BookingControllerTest extends AbstractTest {
     }
 
     @Test
-    void testUpdateBookingSuccess() throws Exception {
+    void testUpdateBookingWeekend() throws Exception {
         Car car = prepareCar(UUID.randomUUID());
         populateDbCar(car);
         ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
         populateDbParkingSpace(ps);
-        Booking booking = prepareBooking(car.getId(), ps.getId());
+        Booking booking = prepareBookingWeekend(car.getId(), ps.getId());
         populateDbBooking(booking);
 
         ParkingSpace newPs = prepareParkingSpace(UUID.randomUUID());
@@ -141,28 +148,41 @@ public class BookingControllerTest extends AbstractTest {
         booking.setPsId(newPs.getId());
         var bookingJson = jackson.writeValueAsString(booking);
 
-        LocalDateTime now = LocalDateTime.now();
-        if (now.getDayOfWeek() == DayOfWeek.SATURDAY || now.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            mockMvc.perform(put("/bookings/update")
-                            .with(user("admin").password("pass").roles("USER", "ADMIN"))
-                            .contentType("application/json")
-                            .content(bookingJson))
-                    .andDo(print())
-                    .andExpect(status().is(400));
-        } else {
-            mockMvc.perform(put("/bookings/update")
-                            .with(user("admin").password("pass").roles("USER", "ADMIN"))
-                            .contentType("application/json")
-                            .content(bookingJson))
-                    .andExpect(status().isOk());
-        }
+        mockMvc.perform(put("/bookings/update")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
+                        .contentType("application/json")
+                        .content(bookingJson))
+                .andDo(print())
+                .andExpect(status().is(400));
+    }
+
+    @Test
+    void testUpdateBookingWeekdaysSuccess() throws Exception {
+        Car car = prepareCar(UUID.randomUUID());
+        populateDbCar(car);
+        ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
+        populateDbParkingSpace(ps);
+        Booking booking = prepareBookingWeekdays(car.getId(), ps.getId());
+        populateDbBooking(booking);
+
+        ParkingSpace newPs = prepareParkingSpace(UUID.randomUUID());
+        newPs.setX(100);
+        populateDbParkingSpace(newPs);
+        booking.setPsId(newPs.getId());
+        var bookingJson = jackson.writeValueAsString(booking);
+
+        mockMvc.perform(put("/bookings/update")
+                        .with(user("admin").password("pass").roles("USER", "ADMIN"))
+                        .contentType("application/json")
+                        .content(bookingJson))
+                .andExpect(status().isOk());
     }
 
     @Test
     void testUpdateBookingNotFound() throws Exception {
         ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
         populateDbParkingSpace(ps);
-        Booking booking = prepareBooking(UUID.randomUUID(), ps.getId());
+        Booking booking = prepareBookingWeekdays(UUID.randomUUID(), ps.getId());
         var bookingJson = jackson.writeValueAsString(booking);
 
         mockMvc.perform(put("/bookings/update")
@@ -179,14 +199,14 @@ public class BookingControllerTest extends AbstractTest {
         populateDbCar(car);
         ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
         populateDbParkingSpace(ps);
-        Booking booking = prepareBooking(car.getId(), ps.getId());
+        Booking booking = prepareBookingWeekdays(car.getId(), ps.getId());
         populateDbBooking(booking);
 
         ParkingSpace newPs = prepareParkingSpace(UUID.randomUUID());
         newPs.setX(100);
         newPs.setBusy(true);
         populateDbParkingSpace(newPs);
-        Booking newBooking = prepareBooking(car.getId(), newPs.getId());
+        Booking newBooking = prepareBookingWeekdays(car.getId(), newPs.getId());
         var bookingJson = jackson.writeValueAsString(newBooking);
 
         mockMvc.perform(put("/bookings/update")
@@ -203,7 +223,7 @@ public class BookingControllerTest extends AbstractTest {
         populateDbCar(car);
         ParkingSpace ps = prepareParkingSpace(UUID.randomUUID());
         populateDbParkingSpace(ps);
-        Booking booking = prepareBooking(car.getId(), ps.getId());
+        Booking booking = prepareBookingWeekdays(car.getId(), ps.getId());
         populateDbBooking(booking);
 
 
@@ -218,6 +238,34 @@ public class BookingControllerTest extends AbstractTest {
                         .with(user("admin").password("pass").roles("USER", "ADMIN")))
                 .andDo(print())
                 .andExpect(status().is(400));
+    }
+
+    private Booking prepareBookingWeekdays(UUID carId, UUID psId) {
+        LocalDateTime timeFrom = LocalDateTime.of(2100, 1, 1, 0, 0);
+        LocalDateTime timeTo = LocalDateTime.of(2100, 1, 1, 2, 0);
+        String timeFromStr = timeFrom.format(formatter);
+        String timeToStr = timeTo.format(formatter);
+
+        return Booking.builder()
+                .carId(carId)
+                .psId(psId)
+                .timeFrom(timeFromStr)
+                .timeTo(timeToStr)
+                .build();
+    }
+
+    private Booking prepareBookingWeekend(UUID carId, UUID psId) {
+        LocalDateTime timeFrom = LocalDateTime.of(2100, 1, 2, 0, 0);
+        LocalDateTime timeTo = LocalDateTime.of(2100, 1, 2, 2, 0);
+        String timeFromStr = timeFrom.format(formatter);
+        String timeToStr = timeTo.format(formatter);
+
+        return Booking.builder()
+                .carId(carId)
+                .psId(psId)
+                .timeFrom(timeFromStr)
+                .timeTo(timeToStr)
+                .build();
     }
 
     private void populateDbCar(Car car) {
@@ -273,21 +321,6 @@ public class BookingControllerTest extends AbstractTest {
                 .x(1)
                 .y(1)
                 .busy(false)
-                .build();
-    }
-
-    private Booking prepareBooking(UUID carId, UUID psId) {
-
-        LocalDateTime nowPlus1Hour = LocalDateTime.now().plus(1, ChronoUnit.HOURS);
-        LocalDateTime nowPlus5Hours = LocalDateTime.now().plus(5, ChronoUnit.HOURS);
-        String nowPlus1HourStr = nowPlus1Hour.format(formatter);
-        String nowPlus5HoursStr = nowPlus5Hours.format(formatter);
-
-        return Booking.builder()
-                .carId(carId)
-                .psId(psId)
-                .timeFrom(nowPlus1HourStr)
-                .timeTo(nowPlus5HoursStr)
                 .build();
     }
 
