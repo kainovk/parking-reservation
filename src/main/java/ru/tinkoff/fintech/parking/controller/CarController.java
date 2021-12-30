@@ -18,12 +18,9 @@ import ru.tinkoff.fintech.parking.model.Car;
 import ru.tinkoff.fintech.parking.service.CarService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static ru.tinkoff.fintech.parking.exception.ApplicationError.ApplicationException;
-import static ru.tinkoff.fintech.parking.exception.ApplicationError.CAR_ALREADY_EXISTS;
-import static ru.tinkoff.fintech.parking.exception.ApplicationError.CAR_NOT_FOUND;
 
 @RestController
 @RequestMapping("/cars")
@@ -42,22 +39,12 @@ public class CarController {
                 .width(request.getWidth())
                 .build();
 
-        Optional<Car> carToFind = carService.findById(car.getId());
-        if (carToFind.isPresent()) {
-            throw CAR_ALREADY_EXISTS.exception("Car " + car.getId() + " is already exists");
-        } else {
-            carService.save(car);
-        }
+        carService.save(car);
     }
 
     @GetMapping("/get/{id}")
     public Car getCar(@PathVariable UUID id) {
-        Optional<Car> carToFind = carService.findById(id);
-        if (carToFind.isEmpty()) {
-            throw CAR_NOT_FOUND.exception("Car with id=" + id + " not found");
-        } else {
-            return carService.findById(id).orElseThrow();
-        }
+        return carService.findById(id).orElseThrow();
     }
 
     @GetMapping("/get")
@@ -75,24 +62,12 @@ public class CarController {
                 .width(request.getWidth())
                 .build();
 
-        Optional<Car> carToFind = carService.findById(id);
-
-        if (carToFind.isEmpty()) {
-            throw CAR_NOT_FOUND.exception("Car " + id + " not found");
-        } else {
-            carService.update(car);
-        }
+        carService.update(car);
     }
 
     @DeleteMapping("/delete/{id}")
     public void deleteCar(@PathVariable UUID id) {
-        Optional<Car> car = carService.findById(id);
-
-        if (car.isEmpty()) {
-            throw CAR_NOT_FOUND.exception("Car " + id + " not found");
-        } else {
-            carService.delete(id);
-        }
+        carService.delete(id);
     }
 
     @ExceptionHandler(ApplicationError.ApplicationException.class)
